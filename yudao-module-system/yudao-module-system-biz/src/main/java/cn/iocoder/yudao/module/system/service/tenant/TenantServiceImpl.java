@@ -20,7 +20,9 @@ import cn.iocoder.yudao.module.system.dal.dataobject.permission.MenuDO;
 import cn.iocoder.yudao.module.system.dal.dataobject.permission.RoleDO;
 import cn.iocoder.yudao.module.system.dal.dataobject.tenant.TenantDO;
 import cn.iocoder.yudao.module.system.dal.dataobject.tenant.TenantPackageDO;
+import cn.iocoder.yudao.module.system.dal.dataobject.tenantconfig.TenantConfigDO;
 import cn.iocoder.yudao.module.system.dal.mysql.tenant.TenantMapper;
+import cn.iocoder.yudao.module.system.dal.mysql.tenantconfig.TenantConfigMapper;
 import cn.iocoder.yudao.module.system.enums.permission.RoleCodeEnum;
 import cn.iocoder.yudao.module.system.enums.permission.RoleTypeEnum;
 import cn.iocoder.yudao.module.system.service.permission.MenuService;
@@ -63,6 +65,9 @@ public class TenantServiceImpl implements TenantService {
     private TenantMapper tenantMapper;
 
     @Resource
+    private TenantConfigMapper tenantConfigMapper;
+
+    @Resource
     private TenantPackageService tenantPackageService;
     @Resource
     @Lazy // 延迟，避免循环依赖报错
@@ -93,7 +98,16 @@ public class TenantServiceImpl implements TenantService {
             throw exception(TENANT_EXPIRE, tenant.getName());
         }
     }
-
+    
+    @Override
+    public String getTenantConfig(String key) {
+        TenantConfigDO configDO = tenantConfigMapper.selectOne("configKey", key);
+        if(null==configDO){
+            return null;
+        }
+        return configDO.getValue();
+    }
+    
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createTenant(TenantCreateReqVO createReqVO) {

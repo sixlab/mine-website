@@ -26,5 +26,10 @@ public class TenantApiImpl implements TenantApi {
     public void validateTenant(Long id) {
         tenantService.validTenant(id);
     }
-
+    
+    @Override
+    public String getTenantConfig(String key) {
+        return tenantService.getTenantConfig(key);
+    }
+    
 }

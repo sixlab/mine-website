@@ -161,5 +161,6 @@ public interface ErrorCodeConstants {
 
     // ========== 站内信发送 1002028000 ==========
     ErrorCode NOTIFY_SEND_TEMPLATE_PARAM_MISS = new ErrorCode(1002025000, "模板参数({})缺失");
-
+    
+    ErrorCode TENANT_CONFIG_NOT_EXISTS = new ErrorCode(99020000, "租户参数配置不存在");
 }

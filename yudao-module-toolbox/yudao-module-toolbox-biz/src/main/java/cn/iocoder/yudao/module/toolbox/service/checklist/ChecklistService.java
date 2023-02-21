@@ -1,10 +1,15 @@
 package cn.iocoder.yudao.module.toolbox.service.checklist;
 
-import java.util.*;
-import javax.validation.*;
-import cn.iocoder.yudao.module.toolbox.controller.admin.checklist.vo.*;
-import cn.iocoder.yudao.module.toolbox.dal.dataobject.checklist.ChecklistDO;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
+import cn.iocoder.yudao.module.toolbox.controller.admin.checklist.vo.ChecklistCreateReqVO;
+import cn.iocoder.yudao.module.toolbox.controller.admin.checklist.vo.ChecklistExportReqVO;
+import cn.iocoder.yudao.module.toolbox.controller.admin.checklist.vo.ChecklistPageReqVO;
+import cn.iocoder.yudao.module.toolbox.controller.admin.checklist.vo.ChecklistUpdateReqVO;
+import cn.iocoder.yudao.module.toolbox.dal.dataobject.checklist.ChecklistDO;
+
+import javax.validation.Valid;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 任务清单 Service 接口
@@ -66,5 +71,11 @@ public interface ChecklistService {
      * @return 任务清单列表
      */
     List<ChecklistDO> getChecklistList(ChecklistExportReqVO exportReqVO);
-
+    
+    /**
+     * 获得任务清单当前任务的文本列表
+     *
+     * @return 任务清单当前任务的文本列表
+     */
+    String checkListText();
 }

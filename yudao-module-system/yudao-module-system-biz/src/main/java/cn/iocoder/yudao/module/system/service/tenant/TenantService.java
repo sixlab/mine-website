@@ -128,4 +128,11 @@ public interface TenantService {
      * @param id 租户编号
      */
     void validTenant(Long id);
+    
+    /**
+     * 获取租户的配置信息
+     * @param key 配置项
+     * @return
+     */
+    String getTenantConfig(String key);
 }

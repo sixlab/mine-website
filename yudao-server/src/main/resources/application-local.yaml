@@ -161,6 +161,11 @@ logging:
 
 debug: false
 
+--- #################### 钉钉相关配置 ####################
+dingtalk:
+  app-key: wx041349c6f39b268b
+  secret: 5abee519483bc9f8cb37ce280e814bd0
+
 --- #################### 微信公众号、小程序相关配置 ####################
 wx:
   mp: # 公众号配置（必填），参见 https://github.com/Wechat-Group/WxJava/blob/develop/spring-boot-starters/wx-java-mp-spring-boot-starter/README.md 文档
