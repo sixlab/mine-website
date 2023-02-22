@@ -36,10 +36,10 @@ public class ChecklistNotifyJob implements JobHandler {
         Long tenantId = TenantContextHolder.getTenantId();
         System.out.println("当前租户：" + tenantId);
     
-        String dingTalkId = tenantApi.getTenantConfig(DingtalkKeyConstants.DINGTALK_GROUP_ID);
+        String dingTalkId = tenantApi.getTenantConfig(DingtalkKeyConstants.DINGTALK_USER_ID);
 
         if(StrUtil.isNotEmpty(dingTalkId)){
-            String message = checklistService.checkListText();
+            String message = checklistService.todoChecklistText();
     
             dingtalkFrameworkService.sendText(dingTalkId, message);
     

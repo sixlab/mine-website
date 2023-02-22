@@ -1,32 +1,29 @@
 package cn.iocoder.yudao.module.system.controller.admin.tenantconfig;
 
-import org.springframework.web.bind.annotation.*;
-import javax.annotation.Resource;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.security.access.prepost.PreAuthorize;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Operation;
-
-import javax.validation.constraints.*;
-import javax.validation.*;
-import javax.servlet.http.*;
-import java.util.*;
-import java.io.IOException;
-
-import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.common.pojo.CommonResult;
-import static cn.iocoder.yudao.framework.common.pojo.CommonResult.success;
-
+import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.excel.core.util.ExcelUtils;
-
 import cn.iocoder.yudao.framework.operatelog.core.annotations.OperateLog;
-import static cn.iocoder.yudao.framework.operatelog.core.enums.OperateTypeEnum.*;
-
 import cn.iocoder.yudao.module.system.controller.admin.tenantconfig.vo.*;
-import cn.iocoder.yudao.module.system.dal.dataobject.tenantconfig.TenantConfigDO;
 import cn.iocoder.yudao.module.system.convert.tenantconfig.TenantConfigConvert;
+import cn.iocoder.yudao.module.system.dal.dataobject.tenantconfig.TenantConfigDO;
 import cn.iocoder.yudao.module.system.service.tenantconfig.TenantConfigService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+
+import static cn.iocoder.yudao.framework.common.pojo.CommonResult.success;
+import static cn.iocoder.yudao.framework.operatelog.core.enums.OperateTypeEnum.EXPORT;
 
 @Tag(name = "管理后台 - 租户参数配置")
 @RestController
@@ -40,7 +37,7 @@ public class TenantConfigController {
     @PostMapping("/create")
     @Operation(summary = "创建租户参数配置")
     @PreAuthorize("@ss.hasPermission('system:tenant-config:create')")
-    public CommonResult<Integer> createTenantConfig(@Valid @RequestBody TenantConfigCreateReqVO createReqVO) {
+    public CommonResult<Long> createTenantConfig(@Valid @RequestBody TenantConfigCreateReqVO createReqVO) {
         return success(tenantConfigService.createTenantConfig(createReqVO));
     }
 
@@ -56,7 +53,7 @@ public class TenantConfigController {
     @Operation(summary = "删除租户参数配置")
     @Parameter(name = "id", description = "编号", required = true)
     @PreAuthorize("@ss.hasPermission('system:tenant-config:delete')")
-    public CommonResult<Boolean> deleteTenantConfig(@RequestParam("id") Integer id) {
+    public CommonResult<Boolean> deleteTenantConfig(@RequestParam("id") Long id) {
         tenantConfigService.deleteTenantConfig(id);
         return success(true);
     }
@@ -65,7 +62,7 @@ public class TenantConfigController {
     @Operation(summary = "获得租户参数配置")
     @Parameter(name = "id", description = "编号", required = true, example = "1024")
     @PreAuthorize("@ss.hasPermission('system:tenant-config:query')")
-    public CommonResult<TenantConfigRespVO> getTenantConfig(@RequestParam("id") Integer id) {
+    public CommonResult<TenantConfigRespVO> getTenantConfig(@RequestParam("id") Long id) {
         TenantConfigDO tenantConfig = tenantConfigService.getTenantConfig(id);
         return success(TenantConfigConvert.INSTANCE.convert(tenantConfig));
     }
@@ -74,7 +71,7 @@ public class TenantConfigController {
     @Operation(summary = "获得租户参数配置列表")
     @Parameter(name = "ids", description = "编号列表", required = true, example = "1024,2048")
     @PreAuthorize("@ss.hasPermission('system:tenant-config:query')")
-    public CommonResult<List<TenantConfigRespVO>> getTenantConfigList(@RequestParam("ids") Collection<Integer> ids) {
+    public CommonResult<List<TenantConfigRespVO>> getTenantConfigList(@RequestParam("ids") Collection<Long> ids) {
         List<TenantConfigDO> list = tenantConfigService.getTenantConfigList(ids);
         return success(TenantConfigConvert.INSTANCE.convertList(list));
     }

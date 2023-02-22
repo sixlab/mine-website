@@ -1,0 +1,9 @@
+### 钉钉回调接口测试
+POST {{baseUrl}}/dingtalk/open/callback
+Content-Type: application/json
+
+{
+  "senderStaffId": "test",
+  "msgtype": "text",
+  "text": {"content": "h"}
+}

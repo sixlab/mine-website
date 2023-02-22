@@ -1,11 +1,10 @@
 package cn.iocoder.yudao.module.system.dal.dataobject.tenantconfig;
 
-import lombok.*;
-import java.util.*;
-import java.time.LocalDateTime;
-import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.*;
 import cn.iocoder.yudao.framework.mybatis.core.dataobject.BaseDO;
+import com.baomidou.mybatisplus.annotation.KeySequence;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.*;
 
 /**
  * 租户参数配置 DO
@@ -26,7 +25,7 @@ public class TenantConfigDO extends BaseDO {
      * 参数主键
      */
     @TableId
-    private Integer id;
+    private Long id;
     /**
      * 参数分组
      */

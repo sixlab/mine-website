@@ -10,6 +10,7 @@ import cn.iocoder.yudao.framework.common.util.date.DateUtils;
 import cn.iocoder.yudao.framework.tenant.config.TenantProperties;
 import cn.iocoder.yudao.framework.tenant.core.context.TenantContextHolder;
 import cn.iocoder.yudao.framework.tenant.core.util.TenantUtils;
+import cn.iocoder.yudao.module.system.api.tenant.dto.TenantConfigReqDTO;
 import cn.iocoder.yudao.module.system.controller.admin.permission.vo.role.RoleCreateReqVO;
 import cn.iocoder.yudao.module.system.controller.admin.tenant.vo.tenant.TenantCreateReqVO;
 import cn.iocoder.yudao.module.system.controller.admin.tenant.vo.tenant.TenantExportReqVO;
@@ -101,11 +102,20 @@ public class TenantServiceImpl implements TenantService {
     
     @Override
     public String getTenantConfig(String key) {
-        TenantConfigDO configDO = tenantConfigMapper.selectOne("configKey", key);
+        TenantConfigDO configDO = tenantConfigMapper.selectOne("config_key", key);
         if(null==configDO){
             return null;
         }
         return configDO.getValue();
+    }
+    
+    @Override
+    public TenantConfigReqDTO getTenantConfig(String key, String val) {
+        TenantConfigReqDTO configDO = tenantConfigMapper.selectByVal(key, val);
+        if(null==configDO){
+            return null;
+        }
+        return configDO;
     }
     
     @Override

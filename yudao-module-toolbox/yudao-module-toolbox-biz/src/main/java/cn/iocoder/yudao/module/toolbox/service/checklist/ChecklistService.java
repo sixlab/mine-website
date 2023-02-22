@@ -72,10 +72,22 @@ public interface ChecklistService {
      */
     List<ChecklistDO> getChecklistList(ChecklistExportReqVO exportReqVO);
     
+    String taskChecklistText();
+    
     /**
      * 获得任务清单当前任务的文本列表
      *
      * @return 任务清单当前任务的文本列表
      */
-    String checkListText();
+    String todoChecklistText();
+    
+    void help(String dingUserId, String user);
+    void update(String dingUserId, String user);
+    void restart(String dingUserId, String user);
+    void listTodo(String dingUserId, String user);
+    void listTask(String dingUserId, String user);
+    void status(String dingUserId, String user,Integer indexNo);
+    void addTask(String dingUserId, String user,String[] params);
+    void delete(String dingUserId, String user,Integer indexNo);
+    void tips(String dingUserId, String user,String[] params);
 }

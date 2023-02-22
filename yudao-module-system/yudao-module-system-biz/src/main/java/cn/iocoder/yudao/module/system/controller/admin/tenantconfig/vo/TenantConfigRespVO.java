@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class TenantConfigRespVO extends TenantConfigBaseVO {
 
     @Schema(description = "参数主键", required = true, example = "27486")
-    private Integer id;
+    private Long id;
 
     @Schema(description = "创建时间", required = true)
     private LocalDateTime createTime;

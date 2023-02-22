@@ -1,5 +1,7 @@
 package cn.iocoder.yudao.module.system.api.tenant;
 
+import cn.iocoder.yudao.module.system.api.tenant.dto.TenantConfigReqDTO;
+
 import java.util.List;
 
 /**
@@ -24,4 +26,6 @@ public interface TenantApi {
     void validateTenant(Long id);
 
     String getTenantConfig(String key);
+    
+    TenantConfigReqDTO getTenantConfig(String key, String val);
 }

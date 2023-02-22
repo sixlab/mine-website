@@ -1,14 +1,11 @@
 package cn.iocoder.yudao.module.system.controller.admin.tenantconfig.vo;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-import java.util.*;
-import java.time.LocalDateTime;
-import java.time.LocalDateTime;
-
-import com.alibaba.excel.annotation.ExcelProperty;
 import cn.iocoder.yudao.framework.excel.core.annotations.DictFormat;
 import cn.iocoder.yudao.framework.excel.core.convert.DictConvert;
+import com.alibaba.excel.annotation.ExcelProperty;
+import lombok.Data;
+
+import java.time.LocalDateTime;
 
 
 /**
@@ -20,7 +17,7 @@ import cn.iocoder.yudao.framework.excel.core.convert.DictConvert;
 public class TenantConfigExcelVO {
 
     @ExcelProperty("参数主键")
-    private Integer id;
+    private Long id;
 
     @ExcelProperty("参数分组")
     private String category;

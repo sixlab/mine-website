@@ -24,6 +24,7 @@
         <!-- 示例项目 -->
         <module>yudao-example</module>
         <module>yudao-module-toolbox</module>
+        <module>yudao-module-dingtalk</module>
     </modules>
 
     <name>${project.artifactId}</name>

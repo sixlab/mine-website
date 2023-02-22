@@ -136,7 +136,7 @@ export default {
         mobile: "",
         mobileCode: "",
         rememberMe: false,
-        tenantName: "芋道源码",
+        tenantName: "满茵软件",
       },
       scene: 21,
 

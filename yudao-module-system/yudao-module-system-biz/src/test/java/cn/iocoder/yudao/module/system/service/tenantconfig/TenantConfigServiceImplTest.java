@@ -47,7 +47,7 @@ public class TenantConfigServiceImplTest extends BaseDbUnitTest {
         TenantConfigCreateReqVO reqVO = randomPojo(TenantConfigCreateReqVO.class);
 
         // 调用
-        Integer tenantConfigId = tenantConfigService.createTenantConfig(reqVO);
+        Long tenantConfigId = tenantConfigService.createTenantConfig(reqVO);
         // 断言
         assertNotNull(tenantConfigId);
         // 校验记录的属性是否正确
@@ -87,7 +87,7 @@ public class TenantConfigServiceImplTest extends BaseDbUnitTest {
         TenantConfigDO dbTenantConfig = randomPojo(TenantConfigDO.class);
         tenantConfigMapper.insert(dbTenantConfig);// @Sql: 先插入出一条存在的数据
         // 准备参数
-        Integer id = dbTenantConfig.getId();
+        Long id = dbTenantConfig.getId();
 
         // 调用
         tenantConfigService.deleteTenantConfig(id);
@@ -98,7 +98,7 @@ public class TenantConfigServiceImplTest extends BaseDbUnitTest {
     @Test
     public void testDeleteTenantConfig_notExists() {
         // 准备参数
-        Integer id = randomIntegerId();
+        Long id = randomLongId();
 
         // 调用, 并断言异常
         assertServiceException(() -> tenantConfigService.deleteTenantConfig(id), TENANT_CONFIG_NOT_EXISTS);

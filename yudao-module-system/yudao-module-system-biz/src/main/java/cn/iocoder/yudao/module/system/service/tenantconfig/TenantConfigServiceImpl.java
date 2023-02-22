@@ -28,7 +28,7 @@ public class TenantConfigServiceImpl implements TenantConfigService {
     private TenantConfigMapper tenantConfigMapper;
 
     @Override
-    public Integer createTenantConfig(TenantConfigCreateReqVO createReqVO) {
+    public Long createTenantConfig(TenantConfigCreateReqVO createReqVO) {
         // 插入
         TenantConfigDO tenantConfig = TenantConfigConvert.INSTANCE.convert(createReqVO);
         tenantConfigMapper.insert(tenantConfig);
@@ -46,26 +46,26 @@ public class TenantConfigServiceImpl implements TenantConfigService {
     }
 
     @Override
-    public void deleteTenantConfig(Integer id) {
+    public void deleteTenantConfig(Long id) {
         // 校验存在
         validateTenantConfigExists(id);
         // 删除
         tenantConfigMapper.deleteById(id);
     }
 
-    private void validateTenantConfigExists(Integer id) {
+    private void validateTenantConfigExists(Long id) {
         if (tenantConfigMapper.selectById(id) == null) {
             throw exception(TENANT_CONFIG_NOT_EXISTS);
         }
     }
 
     @Override
-    public TenantConfigDO getTenantConfig(Integer id) {
+    public TenantConfigDO getTenantConfig(Long id) {
         return tenantConfigMapper.selectById(id);
     }
 
     @Override
-    public List<TenantConfigDO> getTenantConfigList(Collection<Integer> ids) {
+    public List<TenantConfigDO> getTenantConfigList(Collection<Long> ids) {
         return tenantConfigMapper.selectBatchIds(ids);
     }
 

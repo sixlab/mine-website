@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.system.api.tenant;
 
+import cn.iocoder.yudao.module.system.api.tenant.dto.TenantConfigReqDTO;
 import cn.iocoder.yudao.module.system.service.tenant.TenantService;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,11 @@ public class TenantApiImpl implements TenantApi {
     @Override
     public String getTenantConfig(String key) {
         return tenantService.getTenantConfig(key);
+    }
+    
+    @Override
+    public TenantConfigReqDTO getTenantConfig(String key, String val) {
+        return tenantService.getTenantConfig(key, val);
     }
     
 }

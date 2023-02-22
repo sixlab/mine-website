@@ -2,6 +2,7 @@ package cn.iocoder.yudao.module.system.service.tenant;
 
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.tenant.core.context.TenantContextHolder;
+import cn.iocoder.yudao.module.system.api.tenant.dto.TenantConfigReqDTO;
 import cn.iocoder.yudao.module.system.controller.admin.tenant.vo.tenant.TenantCreateReqVO;
 import cn.iocoder.yudao.module.system.controller.admin.tenant.vo.tenant.TenantExportReqVO;
 import cn.iocoder.yudao.module.system.controller.admin.tenant.vo.tenant.TenantPageReqVO;
@@ -135,4 +136,11 @@ public interface TenantService {
      * @return
      */
     String getTenantConfig(String key);
+    
+    /**
+     * 获取租户的配置信息
+     * @param key 配置项
+     * @return
+     */
+    TenantConfigReqDTO getTenantConfig(String key, String val);
 }

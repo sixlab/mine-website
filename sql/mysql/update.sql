@@ -5,8 +5,7 @@ INSERT INTO system_menu (id, name, permission, type, sort, parent_id, path, icon
 # 工具箱-任务清单
 create table toolbox_checklist
 (
-    id          bigint auto_increment comment '编号'
-        primary key,
+    id          bigint auto_increment comment '编号' primary key,
     name        varchar(100)                          not null comment '名称',
     checklist_code   varchar(100)                          not null comment '编号',
     checklist_index  int                                   not null comment '顺序',
@@ -81,7 +80,7 @@ VALUES (
 # 租户参数配置
 create table system_tenant_config
 (
-    id          int auto_increment comment '参数主键'   primary key,
+    id          bigint auto_increment comment '参数主键'   primary key,
     category    varchar(50)                            not null comment '参数分组',
     type        tinyint                                not null comment '参数类型',
     name        varchar(100) default ''                not null comment '参数名称',
