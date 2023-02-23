@@ -1,8 +1,10 @@
 package cn.iocoder.yudao.module.dingtalk.controller.admin.open;
 
+import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONObject;
 import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.dingtalk.core.dal.redis.DingtalkKeyConstants;
+import cn.iocoder.yudao.framework.dingtalk.core.service.DingtalkFrameworkService;
 import cn.iocoder.yudao.framework.tenant.core.context.TenantContextHolder;
 import cn.iocoder.yudao.module.dingtalk.mq.producer.ChecklistProducer;
 import cn.iocoder.yudao.module.system.api.tenant.TenantApi;
@@ -34,8 +36,6 @@ public class DingtalkOpenController {
     @PostMapping("/callback")
     @Operation(summary = "钉钉回调")
     public CommonResult<Long> callback(@RequestBody JSONObject param) {
-        // public CommonResult<Long> callback(@Valid @RequestBody ChecklistCreateReqVO createReqVO) {
-        
         // 输出回调内容
         log.info(param.toStringPretty());
         CommonResult<Long> respVO = new CommonResult<>();

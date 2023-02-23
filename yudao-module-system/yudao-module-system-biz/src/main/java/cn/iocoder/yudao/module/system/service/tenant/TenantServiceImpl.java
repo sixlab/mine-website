@@ -111,11 +111,7 @@ public class TenantServiceImpl implements TenantService {
     
     @Override
     public TenantConfigReqDTO getTenantConfig(String key, String val) {
-        TenantConfigReqDTO configDO = tenantConfigMapper.selectByVal(key, val);
-        if(null==configDO){
-            return null;
-        }
-        return configDO;
+        return tenantConfigMapper.selectByVal(key, val);
     }
     
     @Override

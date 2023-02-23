@@ -6,7 +6,7 @@
       "description": "钉钉API的APP key."
     },
     {
-      "name": "dingtalk.secret",
+      "name": "dingtalk.app-secret",
       "type": "java.lang.String",
       "description": "钉钉API的secret."
     }
