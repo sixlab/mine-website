@@ -36,4 +36,4 @@ jobs:
       run: sshpass -p ${{secrets.SERVER_PASSWORD}} scp -P ${{ secrets.SERVER_PORT }} -r -o StrictHostKeyChecking=no ./yudao-server/target/yudao-server.jar ${{ secrets.SERVER_USERNAME }}@${{secrets.SERVER_IP}}:${{ secrets.SERVER_DESTINATION_JAR }}
 
     - name: 启动项目
-      run: sshpass -p ${{secrets.SERVER_PASSWORD}} ssh -p ${{ secrets.SERVER_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SERVER_USERNAME }}@${{secrets.REMOTE_IP}} "cd ${{ secrets.SERVER_DESTINATION_JAR }} && ./start.sh"
+      run: sshpass -p ${{secrets.SERVER_PASSWORD}} ssh -p ${{ secrets.SERVER_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SERVER_USERNAME }}@${{secrets.SERVER_IP}} "cd ${{ secrets.SERVER_DESTINATION_JAR }} && ./start.sh"
