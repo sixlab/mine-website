@@ -185,7 +185,7 @@ public class ChecklistServiceImpl implements ChecklistService {
     
     @Override
     public void listTask(String dingUserId, String user) {
-        String taskText = todoChecklistText();
+        String taskText = taskChecklistText();
         dingtalkFrameworkService.sendText(dingUserId, taskText);
     
         String todoText = todoChecklistText();
@@ -229,6 +229,7 @@ public class ChecklistServiceImpl implements ChecklistService {
         // 先设置为默认启用
         checklistDO.setStatus(0);
         checklistDO.setName(params[1]);
+        checklistDO.setChecklistIndex(0);
     
         if (params.length >= 3) {
             checklistDO.setChecklistCron(params[2]);
