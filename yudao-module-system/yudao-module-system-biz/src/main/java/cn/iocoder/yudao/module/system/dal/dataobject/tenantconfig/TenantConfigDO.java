@@ -50,6 +50,8 @@ public class TenantConfigDO extends BaseDO {
     private String value;
     /**
      * 是否可见
+     *
+     * 枚举 {@link TODO infra_boolean_string 对应的类}
      */
     private Boolean visible;
     /**

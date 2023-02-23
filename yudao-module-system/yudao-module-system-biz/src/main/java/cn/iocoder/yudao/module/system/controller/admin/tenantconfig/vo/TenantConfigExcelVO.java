@@ -35,7 +35,8 @@ public class TenantConfigExcelVO {
     @ExcelProperty("参数键值")
     private String value;
 
-    @ExcelProperty("是否可见")
+    @ExcelProperty(value = "是否可见", converter = DictConvert.class)
+    @DictFormat("infra_boolean_string") // TODO 代码优化：建议设置到对应的 XXXDictTypeConstants 枚举类中
     private Boolean visible;
 
     @ExcelProperty("备注")

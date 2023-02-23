@@ -23,7 +23,8 @@
       </el-form-item>
       <el-form-item label="是否可见" prop="visible">
         <el-select v-model="queryParams.visible" placeholder="请选择是否可见" clearable size="small">
-          <el-option label="请选择字典生成" value="" />
+          <el-option v-for="dict in this.getDictDatas(DICT_TYPE.INFRA_BOOLEAN_STRING)"
+                       :key="dict.value" :label="dict.label" :value="dict.value"/>
         </el-select>
       </el-form-item>
       <el-form-item label="备注" prop="remark">
@@ -64,7 +65,11 @@
       <el-table-column label="参数名称" align="center" prop="name" />
       <el-table-column label="参数键名" align="center" prop="configKey" />
       <el-table-column label="参数键值" align="center" prop="value" />
-      <el-table-column label="是否可见" align="center" prop="visible" />
+      <el-table-column label="是否可见" align="center" prop="visible">
+        <template v-slot="scope">
+          <dict-tag :type="DICT_TYPE.INFRA_BOOLEAN_STRING" :value="scope.row.visible" />
+        </template>
+      </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template v-slot="scope">
@@ -107,7 +112,8 @@
         </el-form-item>
         <el-form-item label="是否可见" prop="visible">
           <el-radio-group v-model="form.visible">
-            <el-radio label="1">请选择字典生成</el-radio>
+            <el-radio v-for="dict in this.getDictDatas(DICT_TYPE.INFRA_BOOLEAN_STRING)"
+                      :key="dict.value" :label="dict.value">{{dict.label}}</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
