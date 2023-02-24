@@ -15,6 +15,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @NoArgsConstructor
@@ -32,7 +33,7 @@ public class DingtalkFrameworkServiceImpl implements DingtalkFrameworkService {
         if (ObjectUtil.isEmpty(token)) {
             token = requestAccessToken();
             if (ObjectUtil.isNotEmpty(token)) {
-                redisTemplate.opsForValue().set(DingtalkKeyConstants.DINGTALK_TOKEN_KEY, token);
+                redisTemplate.opsForValue().set(DingtalkKeyConstants.DINGTALK_TOKEN_KEY, token, 90, TimeUnit.MINUTES);
             } else {
                 return "";
             }

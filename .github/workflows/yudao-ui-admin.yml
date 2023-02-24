@@ -50,7 +50,7 @@ jobs:
         run: sshpass -p ${{secrets.SERVER_PASSWORD}} ssh -p ${{ secrets.SERVER_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SERVER_USERNAME }}@${{secrets.SERVER_IP}} "cd ${{ secrets.SERVER_DESTINATION_ADMIN }} && rm -rf ./*"
 
       - name: 上传新dist
-        run: sshpass -p ${{secrets.SERVER_PASSWORD}} scp -P ${{ secrets.SERVER_PORT }} -r -o StrictHostKeyChecking=no ./yudao-ui-admin/dist/* ${{ secrets.SERVER_USERNAME }}@${{secrets.SERVER_IP}}:${{ secrets.SERVER_DESTINATION_ADMIN }}
+        run: sshpass -p ${{secrets.SERVER_PASSWORD}} scp -P ${{ secrets.SERVER_PORT }} -r -o StrictHostKeyChecking=no ./dist/* ${{ secrets.SERVER_USERNAME }}@${{secrets.SERVER_IP}}:${{ secrets.SERVER_DESTINATION_ADMIN }}
 
       # 查看 workflow 的文档来获取更多信息
       # @see https://github.com/crazy-max/ghaction-github-pages
