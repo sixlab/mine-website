@@ -194,16 +194,6 @@ public class ChecklistServiceImpl implements ChecklistService {
     }
     
     @Override
-    public void update(String dingUserId, String user) {
-    
-    }
-    
-    @Override
-    public void restart(String dingUserId, String user) {
-    
-    }
-    
-    @Override
     public void listTodo(String dingUserId) {
         String todoText = todoChecklistText();
         dingtalkFrameworkService.sendText(dingUserId, todoText);
