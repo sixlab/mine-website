@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.toolbox.service.checklist;
 
+import cn.iocoder.yudao.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.dingtalk.core.service.DingtalkFrameworkService;
 import cn.iocoder.yudao.module.toolbox.controller.admin.checklist.vo.ChecklistCreateReqVO;
@@ -9,6 +10,7 @@ import cn.iocoder.yudao.module.toolbox.controller.admin.checklist.vo.ChecklistUp
 import cn.iocoder.yudao.module.toolbox.convert.checklist.ChecklistConvert;
 import cn.iocoder.yudao.module.toolbox.dal.dataobject.checklist.ChecklistDO;
 import cn.iocoder.yudao.module.toolbox.dal.mysql.checklist.ChecklistMapper;
+import cn.iocoder.yudao.module.toolbox.enums.checklist.ChecklistTypeEnum;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -88,15 +90,22 @@ public class ChecklistServiceImpl implements ChecklistService {
         return checklistMapper.selectList(exportReqVO);
     }
     
+    // 自定义方法
+    
+    /**
+     * 获取未启用任务的文本清单
+     *
+     * @return 未启用任务的文本
+     */
     @Override
     public String taskChecklistText() {
         // 未启用的任务
-        List<ChecklistDO> todoList = checklistMapper.selectList("status", 1);
+        List<ChecklistDO> todoList = checklistMapper.selectList("status", CommonStatusEnum.DISABLE.getStatus());
         
         int index = 0;
         
         StringBuilder sb = new StringBuilder();
-        sb.append("您好，").append("stUser.getShowName()").append("，您的未启用清单：\n\n");
+        sb.append("您好，您的未启用清单：\n\n");
         
         for (ChecklistDO stTodo : todoList) {
             stTodo.setChecklistIndex(--index);
@@ -108,34 +117,50 @@ public class ChecklistServiceImpl implements ChecklistService {
         return sb.toString();
     }
     
+    
+    /**
+     * 获取已启用任务的文本清单
+     *
+     * @return 已启用任务的文本
+     */
     @Override
     public String todoChecklistText() {
         // 启用的任务
-        List<ChecklistDO> todoList = checklistMapper.selectList("status", 0);
+        List<ChecklistDO> todoList = checklistMapper.selectList("status", CommonStatusEnum.ENABLE.getStatus());
         
         int index = 0;
         
         StringBuilder sb = new StringBuilder();
-        sb.append("您好，").append("stUser.getShowName()").append("，您的待办清单：\n\n");
-        
+        sb.append("您好，您的提醒清单：\n\n");
+    
+        sb.append("<<<<<<<<<<\n");
         for (ChecklistDO stTodo : todoList) {
-            stTodo.setChecklistIndex(++index);
-            checklistMapper.updateById(stTodo);
-            
-            sb.append(index).append(". ").append(stTodo.getName()).append("\n");
+            if(ChecklistTypeEnum.TIPS.getType().equals(stTodo.getChecklistType())){
+                stTodo.setChecklistIndex(++index);
+                checklistMapper.updateById(stTodo);
+    
+                sb.append(index).append(". ").append(stTodo.getName()).append("\n");
+            }
+        }
+        sb.append(">>>>>>>>>>\n");
+    
+        sb.append("您好，您的待办清单：\n\n");
+        for (ChecklistDO stTodo : todoList) {
+            if(!ChecklistTypeEnum.TIPS.getType().equals(stTodo.getChecklistType())){
+                stTodo.setChecklistIndex(++index);
+                checklistMapper.updateById(stTodo);
+    
+                sb.append(index).append(". ").append(stTodo.getName()).append("\n");
+            }
         }
         
         return sb.toString();
     }
     
     @Override
-    public void help(String dingUserId, String user) {
+    public void help(String dingUserId) {
         StringBuilder sb = new StringBuilder();
-        // TODO mine重启更新服务器
-        //  if (StConst.ROLE_ADMIN.equals(stUser.getRole())) {
-        //     sb.append("回复 重启: 重启服务器\n");
-        //     sb.append("回复 更新: 更新服务器\n\n");
-        // }
+
         sb.append("回复 h/help: 返回帮助内容\n");
         sb.append("回复 l/list: 返回待办列表\n");
         sb.append("回复 ll: 返回所有任务列表\n");
@@ -151,18 +176,19 @@ public class ChecklistServiceImpl implements ChecklistService {
     
         sb.append("回复 以“b/batch/批量”开头的字符串: 批量完成任务，示例：\n");
         sb.append("    - 批量 1 2 5：将序号是1/2/5的任务完成\n\n");
-        sb.append("回复 以“t/tip/提示”开头的字符串: 设置提示，多个参数以换行符分割，示例：\n");
-        sb.append("    - 提示 xxxxxxx：设置提示语，放置于待办结尾\n");
+        sb.append("回复 以“t/tip/提示”开头的字符串: 设置常驻提醒任务，多个参数以换行符分割，示例：\n");
+        sb.append("    - 提示 xxx yyy：设置常驻提醒任务\n\n");
+        sb.append("回复 以“o/once”开头的字符串: 批量添加一次性任务，多个参数以换行符分割，示例：\n");
+        sb.append("    - once xxx yyy：一次添加多个一次性任务\n");
     
         dingtalkFrameworkService.sendText(dingUserId, sb.toString());
         sb.setLength(0);
     
         sb.append("回复 以“a/add/添加”开头的字符串: 添加任务，多个参数以换行符分割，示例：\n");
-        sb.append("    - 添加 任务名称：添加一次性任务，并默认启用\n");
-        sb.append("    - 添加 任务名称+cron表达式：添加循环任务，并默认不启用，等下次cron表达式生效才启用\n");
-        sb.append("    - 添加 任务名称+cron表达式+1：添加循环任务，并默认启用\n\n");
-        sb.append("    - 1 1 1 * * ?\n");
-        sb.append("    - 1 1 1 ? * MON,TUE,WED,THU,FRI,SAT,SUN\n");
+        sb.append("    - a 任务名称 cron表达式：添加循环任务，并默认不启用，等下次cron表达式生效才启用\n");
+        sb.append("    - a 任务名称 cron表达式 1：添加循环任务，并默认启用\n\n");
+        sb.append("    - 59 59 23 * * ?\n");
+        sb.append("    - 59 59 23 ? * MON,TUE,WED,THU,FRI,SAT,SUN\n");
     
         dingtalkFrameworkService.sendText(dingUserId, sb.toString());
     }
@@ -178,13 +204,13 @@ public class ChecklistServiceImpl implements ChecklistService {
     }
     
     @Override
-    public void listTodo(String dingUserId, String user) {
+    public void listTodo(String dingUserId) {
         String todoText = todoChecklistText();
         dingtalkFrameworkService.sendText(dingUserId, todoText);
     }
     
     @Override
-    public void listTask(String dingUserId, String user) {
+    public void listTask(String dingUserId) {
         String taskText = taskChecklistText();
         dingtalkFrameworkService.sendText(dingUserId, taskText);
     
@@ -193,7 +219,7 @@ public class ChecklistServiceImpl implements ChecklistService {
     }
     
     @Override
-    public void status(String dingUserId, String user, Integer indexNo) {
+    public void status(String dingUserId, Integer indexNo) {
         ChecklistDO checklistDO = checklistMapper.selectOne("checklist_index", indexNo);
     
         if (null != checklistDO) {
@@ -204,7 +230,7 @@ public class ChecklistServiceImpl implements ChecklistService {
                 // 大于0的任务，禁用这个任务
                 checklistDO.setStatus(1);
                 checklistMapper.updateById(checklistDO);
-            
+    
                 sb.append("编号[").append(indexNo).append("]任务完成：").append(checklistDO.getName());
             } else {
                 // 反之，启用这个任务
@@ -221,38 +247,60 @@ public class ChecklistServiceImpl implements ChecklistService {
     }
     
     @Override
-    public void addTask(String dingUserId, String user, String[] params) {
+    public void addTask(String dingUserId, String[] params, Integer checklistType) {
         ChecklistDO checklistDO = new ChecklistDO();
     
         checklistDO.setChecklistCode(dingUserId + new Date().getTime());
     
         // 先设置为默认启用
-        checklistDO.setStatus(0);
-        checklistDO.setName(params[1]);
+        checklistDO.setStatus(CommonStatusEnum.ENABLE.getStatus());
         checklistDO.setChecklistIndex(0);
-    
-        if (params.length >= 3) {
-            checklistDO.setChecklistCron(params[2]);
-            // 如果长度超过2，先设置为禁用
-            checklistDO.setStatus(1);
-        }
-        if (params.length >= 4 && "1".equals(params[3])) {
-            // 第四个参数是1的，再启用
-            checklistDO.setStatus(0);
-        }
-        checklistDO.setChecklistType(1);
+        checklistDO.setChecklistType(checklistType);
         checklistDO.setRemark("");
         checklistDO.setCreateTime(LocalDateTime.now());
+        
+        if(ChecklistTypeEnum.CRON.getType().equals(checklistType)){
+            checklistDO.setName(params[1]);
+            checklistDO.setChecklistCron(params[2]);
     
-        checklistMapper.insert(checklistDO);
-    
-        dingtalkFrameworkService.sendText(dingUserId, "任务添加完成：" + checklistDO.getName());
+            if (params.length >= 4 && "1".equals(params[3])) {
+                // 第四个参数是 1 的，才启用
+                checklistDO.setStatus(CommonStatusEnum.ENABLE.getStatus());
+            }else{
+                // 否则 cron 任务默认先禁用
+                checklistDO.setStatus(CommonStatusEnum.DISABLE.getStatus());
+            }
+            
+            insertTask(dingUserId, checklistDO);
+        }else{
+            boolean task = false;
+            for (String param : params) {
+                // 第一个不是任务，跳过
+                if(task){
+                    checklistDO.setName(param);
+        
+                    insertTask(dingUserId, checklistDO);
+                }else{
+                    task = true;
+                }
+            }
+        }
+        
+        // 列出当前所有任务
         dingtalkFrameworkService.sendText(dingUserId, taskChecklistText());
         dingtalkFrameworkService.sendText(dingUserId, todoChecklistText());
     }
     
+    private void insertTask(String dingUserId, ChecklistDO checklistDO){
+        checklistDO.setId(null);
+    
+        checklistMapper.insert(checklistDO);
+    
+        dingtalkFrameworkService.sendText(dingUserId, "任务添加完成：" + checklistDO.getName());
+    }
+    
     @Override
-    public void delete(String dingUserId, String user, Integer indexNo) {
+    public void delete(String dingUserId, Integer indexNo) {
         ChecklistDO checklistDO = checklistMapper.selectOne("checklist_index", indexNo);
     
         if (null != checklistDO) {
@@ -264,8 +312,4 @@ public class ChecklistServiceImpl implements ChecklistService {
         }
     }
     
-    @Override
-    public void tips(String dingUserId, String user, String[] params) {
-    
-    }
 }

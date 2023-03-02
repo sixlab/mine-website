@@ -1,6 +1,8 @@
 package cn.iocoder.yudao.module.toolbox.dal.dataobject.checklist;
 
+import cn.iocoder.yudao.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.yudao.framework.mybatis.core.dataobject.BaseDO;
+import cn.iocoder.yudao.module.toolbox.enums.checklist.ChecklistTypeEnum;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -41,7 +43,7 @@ public class ChecklistDO extends BaseDO {
     /**
      * 类型
      *
-     * 枚举 {@link TODO toolbox-checklist-type 对应的类}
+     * 枚举 {@link ChecklistTypeEnum}
      */
     private Integer checklistType;
     /**
@@ -51,7 +53,7 @@ public class ChecklistDO extends BaseDO {
     /**
      * 状态
      *
-     * 枚举 {@link TODO common_status 对应的类}
+     * 枚举 {@link CommonStatusEnum}
      */
     private Integer status;
     /**

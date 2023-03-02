@@ -72,6 +72,7 @@ public interface ChecklistService {
      */
     List<ChecklistDO> getChecklistList(ChecklistExportReqVO exportReqVO);
     
+    // 自定义方法
     String taskChecklistText();
     
     /**
@@ -81,13 +82,12 @@ public interface ChecklistService {
      */
     String todoChecklistText();
     
-    void help(String dingUserId, String user);
-    void update(String dingUserId, String user);
-    void restart(String dingUserId, String user);
-    void listTodo(String dingUserId, String user);
-    void listTask(String dingUserId, String user);
-    void status(String dingUserId, String user,Integer indexNo);
-    void addTask(String dingUserId, String user,String[] params);
-    void delete(String dingUserId, String user,Integer indexNo);
-    void tips(String dingUserId, String user,String[] params);
+    void help(String dingUserId);
+    void listTodo(String dingUserId);
+    void listTask(String dingUserId);
+    void status(String dingUserId, Integer indexNo);
+    
+    void addTask(String dingUserId, String[] params, Integer checklistType);
+    
+    void delete(String dingUserId, Integer indexNo);
 }

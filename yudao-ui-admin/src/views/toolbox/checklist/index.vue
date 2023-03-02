@@ -14,7 +14,7 @@
       </el-form-item>
       <el-form-item label="类型" prop="checklistType">
         <el-select v-model="queryParams.checklistType" placeholder="请选择类型" clearable size="small">
-          <el-option v-for="dict in this.getDictDatas(DICT_TYPE.TOOLBOX-CHECKLIST-TYPE)"
+          <el-option v-for="dict in this.getDictDatas(DICT_TYPE.TOOLBOX_CHECKLIST_TYPE)"
                        :key="dict.value" :label="dict.label" :value="dict.value"/>
         </el-select>
       </el-form-item>
@@ -61,7 +61,7 @@
       <el-table-column label="顺序" align="center" prop="checklistIndex" />
       <el-table-column label="类型" align="center" prop="checklistType">
         <template v-slot="scope">
-          <dict-tag :type="DICT_TYPE.TOOLBOX-CHECKLIST-TYPE" :value="scope.row.checklistType" />
+          <dict-tag :type="DICT_TYPE.TOOLBOX_CHECKLIST_TYPE" :value="scope.row.checklistType" />
         </template>
       </el-table-column>
       <el-table-column label="cron 表达式" align="center" prop="checklistCron" />
@@ -103,7 +103,7 @@
         </el-form-item>
         <el-form-item label="类型" prop="checklistType">
           <el-select v-model="form.checklistType" placeholder="请选择类型">
-            <el-option v-for="dict in this.getDictDatas(DICT_TYPE.TOOLBOX-CHECKLIST-TYPE)"
+            <el-option v-for="dict in this.getDictDatas(DICT_TYPE.TOOLBOX_CHECKLIST_TYPE)"
                        :key="dict.value" :label="dict.label" :value="parseInt(dict.value)" />
           </el-select>
         </el-form-item>

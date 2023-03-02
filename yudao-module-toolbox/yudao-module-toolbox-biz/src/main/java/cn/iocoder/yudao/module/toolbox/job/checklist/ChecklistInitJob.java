@@ -1,11 +1,14 @@
 package cn.iocoder.yudao.module.toolbox.job.checklist;
 
 import cn.hutool.core.util.StrUtil;
+import cn.iocoder.yudao.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.yudao.framework.quartz.core.handler.JobHandler;
 import cn.iocoder.yudao.framework.tenant.core.context.TenantContextHolder;
 import cn.iocoder.yudao.framework.tenant.core.job.TenantJob;
 import cn.iocoder.yudao.module.toolbox.dal.dataobject.checklist.ChecklistDO;
 import cn.iocoder.yudao.module.toolbox.dal.mysql.checklist.ChecklistMapper;
+import cn.iocoder.yudao.module.toolbox.enums.checklist.ChecklistTypeEnum;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.support.CronExpression;
 import org.springframework.stereotype.Component;
@@ -35,8 +38,11 @@ public class ChecklistInitJob implements JobHandler {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
-
-        List<ChecklistDO> todoList = checklistMapper.selectList("status", 1);
+    
+        // 获取 cron 类型，且未启用的任务
+        QueryWrapper<ChecklistDO> wrapper = new QueryWrapper<>();
+        wrapper.eq("status", CommonStatusEnum.DISABLE.getStatus()).eq("checklist_type", ChecklistTypeEnum.CRON.getType());
+        List<ChecklistDO> todoList = checklistMapper.selectList(wrapper);
 
         int count = 0;
         for (ChecklistDO todo : todoList) {

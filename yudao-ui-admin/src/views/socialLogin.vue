@@ -83,8 +83,8 @@ export default {
       captchaEnable: true,
       loginForm: {
         loginType: "uname",
-        username: "admin",
-        password: "admin123",
+        username: "",
+        password: "",
         rememberMe: false,
         captchaVerification: "",
       },

@@ -1,14 +1,11 @@
 package cn.iocoder.yudao.module.toolbox.controller.admin.checklist.vo;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-import java.util.*;
-import java.time.LocalDateTime;
-import java.time.LocalDateTime;
-
-import com.alibaba.excel.annotation.ExcelProperty;
 import cn.iocoder.yudao.framework.excel.core.annotations.DictFormat;
 import cn.iocoder.yudao.framework.excel.core.convert.DictConvert;
+import com.alibaba.excel.annotation.ExcelProperty;
+import lombok.Data;
+
+import java.time.LocalDateTime;
 
 
 /**
@@ -32,7 +29,7 @@ public class ChecklistExcelVO {
     private Integer checklistIndex;
 
     @ExcelProperty(value = "类型", converter = DictConvert.class)
-    @DictFormat("toolbox-checklist-type") // TODO 代码优化：建议设置到对应的 XXXDictTypeConstants 枚举类中
+    @DictFormat("toolbox_checklist_type") // TODO 代码优化：建议设置到对应的 XXXDictTypeConstants 枚举类中
     private Integer checklistType;
 
     @ExcelProperty("cron 表达式")
