@@ -1,10 +1,10 @@
 package cn.iocoder.yudao.module.dingtalk.controller.admin.open;
 
-import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONObject;
 import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.dingtalk.core.dal.redis.DingtalkKeyConstants;
-import cn.iocoder.yudao.framework.dingtalk.core.service.DingtalkFrameworkService;
+import cn.iocoder.yudao.framework.idempotent.core.annotation.Idempotent;
+import cn.iocoder.yudao.framework.idempotent.core.keyresolver.impl.ExpressionIdempotentKeyResolver;
 import cn.iocoder.yudao.framework.tenant.core.context.TenantContextHolder;
 import cn.iocoder.yudao.module.dingtalk.mq.producer.ChecklistProducer;
 import cn.iocoder.yudao.module.system.api.tenant.TenantApi;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 @Tag(name = "管理后台 - 钉钉接口")
 @RestController
@@ -35,6 +36,8 @@ public class DingtalkOpenController {
     
     @PostMapping("/callback")
     @Operation(summary = "钉钉回调")
+    @Idempotent(keyResolver = ExpressionIdempotentKeyResolver.class, keyArg = "#param['msgId']",
+            message = "回调正在处理中，忽略重复请求", timeout = 60, timeUnit = TimeUnit.SECONDS)
     public CommonResult<Long> callback(@RequestBody JSONObject param) {
         // 输出回调内容
         log.info(param.toStringPretty());

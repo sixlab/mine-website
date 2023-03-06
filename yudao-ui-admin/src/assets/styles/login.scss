@@ -67,6 +67,8 @@ $buttonHeight: $buttonH * 1px;
     height: $logoHeight;
     background-image: url($logoImage);
     background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     // 定位
     position: absolute;
     top: 50px;
