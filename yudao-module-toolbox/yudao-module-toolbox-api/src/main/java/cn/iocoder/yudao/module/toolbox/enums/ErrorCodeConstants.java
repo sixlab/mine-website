@@ -9,5 +9,6 @@ import cn.iocoder.yudao.framework.common.exception.ErrorCode;
  */
 public interface ErrorCodeConstants {
     ErrorCode CHECKLIST_NOT_EXISTS = new ErrorCode(99010000, "任务清单不存在");
-
+    ErrorCode GOLD_PRICE_NOT_EXISTS = new ErrorCode(99010100, "金价监控不存在");
+    
 }

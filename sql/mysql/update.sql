@@ -152,3 +152,75 @@ VALUES (
     '租户参数配置导出', 'system:tenant-config:export', 3, 5, @parentId,
     '', '', '', 0
 );
+
+# 工具箱 - 金价监控表
+create table toolbox_gold_price
+(
+    id              bigint auto_increment comment '编号'   primary key,
+    gold_price      decimal(18,2)                         not null comment '金价',
+    rise_price      decimal(18,2)                         not null comment '涨价幅度',
+    status          tinyint                               not null comment '状态',
+    remark          varchar(500)                          null comment '备注',
+    creator         varchar(64) default ''                null comment '创建者',
+    create_time     datetime    default CURRENT_TIMESTAMP not null comment '创建时间',
+    updater         varchar(64) default ''                null comment '更新者',
+    update_time     datetime    default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    deleted         bit         default b'0'              not null comment '是否删除'
+)
+    comment '工具箱 - 金价监控表' collate = utf8mb4_general_ci;
+
+-- 菜单 SQL
+INSERT INTO system_menu(
+    name, permission, type, sort, parent_id,
+    path, icon, component, status
+)
+VALUES (
+    '金价监控管理', '', 2, 0, 2167,
+    'gold-price', 'monitor', 'toolbox/goldPrice/index', 0
+);
+
+-- 按钮父菜单ID
+-- 暂时只支持 MySQL。如果你是 Oracle、PostgreSQL、SQLServer 的话，需要手动修改 @parentId 的部分的代码
+SELECT @parentId := LAST_INSERT_ID();
+
+-- 按钮 SQL
+INSERT INTO system_menu(
+    name, permission, type, sort, parent_id,
+    path, icon, component, status
+)
+VALUES (
+    '金价监控查询', 'toolbox:gold-price:query', 3, 1, @parentId,
+    '', '', '', 0
+);
+INSERT INTO system_menu(
+    name, permission, type, sort, parent_id,
+    path, icon, component, status
+)
+VALUES (
+    '金价监控创建', 'toolbox:gold-price:create', 3, 2, @parentId,
+    '', '', '', 0
+);
+INSERT INTO system_menu(
+    name, permission, type, sort, parent_id,
+    path, icon, component, status
+)
+VALUES (
+    '金价监控更新', 'toolbox:gold-price:update', 3, 3, @parentId,
+    '', '', '', 0
+);
+INSERT INTO system_menu(
+    name, permission, type, sort, parent_id,
+    path, icon, component, status
+)
+VALUES (
+    '金价监控删除', 'toolbox:gold-price:delete', 3, 4, @parentId,
+    '', '', '', 0
+);
+INSERT INTO system_menu(
+    name, permission, type, sort, parent_id,
+    path, icon, component, status
+)
+VALUES (
+    '金价监控导出', 'toolbox:gold-price:export', 3, 5, @parentId,
+    '', '', '', 0
+);
