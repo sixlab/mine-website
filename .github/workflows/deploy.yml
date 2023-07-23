@@ -11,29 +11,32 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         java: [ '17' ]
 
+    # 使用的动作。格式：userName/repoName。作用：检出仓库，获取源码。 官方actions库：https://github.com/actions
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK ${{ matrix.Java }}
-      uses: actions/setup-java@v2
+    - name: Step 1 Checkout
+      uses: actions/checkout@v3
+
+    - name: Step 2 Set up JDK ${{ matrix.Java }}
+      uses: actions/setup-java@v3
       with:
         java-version: ${{ matrix.java }}
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
+
+    - name: Step 3 Build with Maven
       run: mvn -B package --file pom.xml -Dmaven.test.skip=true
 
-    - name: 删除旧jar包
+    - name: Step 4 删除旧jar包
       run: sshpass -p ${{secrets.SERVER_PASSWORD}} ssh -p ${{ secrets.SERVER_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SERVER_USERNAME }}@${{secrets.SERVER_IP}} "cd ${{ secrets.SERVER_DESTINATION_JAR }} && rm -rf ./yudao-server.jar"
 
-    - name: 上传jar包
+    - name: Step 5 上传jar包
       run: sshpass -p ${{secrets.SERVER_PASSWORD}} scp -P ${{ secrets.SERVER_PORT }} -r -o StrictHostKeyChecking=no ./yudao-server/target/yudao-server.jar ${{ secrets.SERVER_USERNAME }}@${{secrets.SERVER_IP}}:${{ secrets.SERVER_DESTINATION_JAR }}
 
-    - name: 启动项目
+    - name: Step 6 启动项目
       run: sshpass -p ${{secrets.SERVER_PASSWORD}} ssh -p ${{ secrets.SERVER_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SERVER_USERNAME }}@${{secrets.SERVER_IP}} "cd ${{ secrets.SERVER_DESTINATION_JAR }} && ./start.sh"
