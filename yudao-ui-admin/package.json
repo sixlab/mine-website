@@ -1,8 +1,8 @@
 {
   "name": "yudao-ui-admin",
   "version": "1.7.3-snapshot",
-  "description": "芋道管理系统",
-  "author": "芋道",
+  "description": "满茵管理系统",
+  "author": "满茵",
   "license": "MIT",
   "scripts": {
     "local": "vue-cli-service serve --mode local",
