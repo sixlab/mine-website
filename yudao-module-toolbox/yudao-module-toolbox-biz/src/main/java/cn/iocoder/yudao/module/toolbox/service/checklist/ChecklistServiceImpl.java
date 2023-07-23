@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.toolbox.service.checklist;
 
+import cn.hutool.core.util.NumberUtil;
 import cn.iocoder.yudao.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.dingtalk.core.service.DingtalkFrameworkService;
@@ -16,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -302,4 +304,27 @@ public class ChecklistServiceImpl implements ChecklistService {
         }
     }
     
+    @Override
+    public void taskInfo(String dingUserId, String[] params) {
+        if (params.length >= 2) {
+            List<Long> ids = new ArrayList<>();
+            for (int i = 1; i < params.length; i++) {
+                if (NumberUtil.isNumber(params[i])) {
+                    ids.add(Long.valueOf(params[i]));
+                }
+            }
+    
+            StringBuilder sb = new StringBuilder();
+            sb.append("您好，您的清单详情：\n");
+    
+            List<ChecklistDO> checklistList = getChecklistList(ids);
+            for (ChecklistDO stTodo : checklistList) {
+                sb.append("\n").append(stTodo.getChecklistIndex()).append(". [").append(stTodo.getStatus()).append("]")
+                        .append(stTodo.getName());
+                sb.append("\n    [").append(stTodo.getChecklistType()).append("]").append(stTodo.getChecklistCron());
+            }
+            
+            dingtalkFrameworkService.sendText(dingUserId, sb.toString());
+        }
+    }
 }

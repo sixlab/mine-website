@@ -90,4 +90,6 @@ public interface ChecklistService {
     void addTask(String dingUserId, String[] params, Integer checklistType);
     
     void delete(String dingUserId, Integer indexNo);
+    
+    void taskInfo(String dingUserId, String[] params);
 }

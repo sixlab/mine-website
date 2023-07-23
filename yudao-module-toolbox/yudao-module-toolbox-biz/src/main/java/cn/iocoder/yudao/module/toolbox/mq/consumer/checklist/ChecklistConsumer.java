@@ -36,6 +36,10 @@ public class ChecklistConsumer extends AbstractStreamMessageListener<ChecklistMe
         } else if (StrUtil.equalsAny(content, "ll")) {
             checklistService.listTask(dingUserId);
             // 以下是内容为数字的
+        } else if (StrUtil.equalsAny(content, "i", "info")) {
+            String[] params = StrUtil.splitToArray(content, " ");
+            checklistService.taskInfo(dingUserId, params);
+            // 以下是内容为数字的
         } else if (NumberUtil.isNumber(content)) {
             Integer indexNo = Integer.valueOf(content);
             checklistService.status(dingUserId, indexNo);

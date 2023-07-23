@@ -6,7 +6,7 @@ name: Java CI with Maven
 on:
   push:
     tags:
-      - "deploy-*"
+      - "deploy*"
   #  branches: [ master ]
   # pull_request:
   #   branches: [ master ]
