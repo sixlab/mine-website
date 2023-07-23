@@ -32,7 +32,7 @@ jobs:
         cache: maven
 
     - name: Step 3 Build with Maven
-      run: mvn -B package --file pom.xml -Dmaven.test.skip=true
+      run: mvn -B package -p --file pom.xml -Dmaven.test.skip=true
 
     - name: Step 4 删除旧jar包
       run: sshpass -p ${{secrets.SERVER_PASSWORD}} ssh -p ${{ secrets.SERVER_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SERVER_USERNAME }}@${{secrets.SERVER_IP}} "cd ${{ secrets.SERVER_DESTINATION_JAR }} && rm -rf ./yudao-server.jar"
